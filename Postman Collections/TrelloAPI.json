@@ -2,6 +2,7 @@
 	"info": {
 		"_postman_id": "d45c328e-fcd3-4a2b-8a35-072609378414",
 		"name": "Trello API",
+		"description": "This is a collection of the requests and tests that are covering the main flow for Board, Cards and Lists creation",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
@@ -772,52 +773,52 @@
 	],
 	"variable": [
 		{
-			"id": "6f15522a-1844-4692-b81d-7acb7b04af08",
+			"id": "15418c40-1280-4959-bf1d-5cd8b98694a9",
 			"key": "baseUrl",
 			"value": "https://api.trello.com/"
 		},
 		{
-			"id": "e31496b0-4a35-4e67-b999-bf33125285dc",
+			"id": "f23887d8-fac7-4101-8b84-767bc723e80b",
 			"key": "trelloKey",
 			"value": "e1ad87515c93f75a12c540d98265a385"
 		},
 		{
-			"id": "5c671b79-3587-4ef0-bcd0-066146bea7ce",
+			"id": "8622c3ae-b0b9-4c2d-b709-059b924a56fd",
 			"key": "trelloToken",
 			"value": "ATTAe62c8691333a5dcde39467c5c3d7864e9f1ad4e9dd22471db3d25bf1c794d08672E9A72E"
 		},
 		{
-			"id": "71358f0f-af6b-4781-aeac-c475cca2a6cb",
+			"id": "1581deac-4f7f-4e13-bc49-27902b2f8b60",
 			"key": "lastBoardId",
 			"value": ""
 		},
 		{
-			"id": "3642be44-d84c-4076-953f-6a00b823ed6f",
+			"id": "7be50622-11f2-4f2b-baaa-38b070110ea0",
 			"key": "todoListId",
 			"value": ""
 		},
 		{
-			"id": "7dfedaa5-cc68-44e5-991a-95f9864df5a2",
+			"id": "62e27d29-8b62-447d-950c-79534a387405",
 			"key": "doneListId",
 			"value": ""
 		},
 		{
-			"id": "61639ccd-d45a-41b4-8d35-f4b3e40b5a8a",
+			"id": "3aec9389-e310-44c7-ab7d-8e4c489c5eea",
 			"key": "cardIdInTodoList",
 			"value": ""
 		},
 		{
-			"id": "f19254b1-e4cc-4ba4-9ce5-61ced1ad793c",
+			"id": "ae051467-7d0f-4764-9c3d-e237c957f20b",
 			"key": "firstBoardId",
 			"value": ""
 		},
 		{
-			"id": "bf4530be-1aaa-45aa-bd23-e7d323edb288",
+			"id": "809ae389-4790-4174-b8da-5b9de60453b9",
 			"key": "existingBoardIds",
 			"value": ""
 		},
 		{
-			"id": "292f610d-2ba1-4ec7-9d35-b16204140967",
+			"id": "e5c77dd8-703d-48c8-8a2c-158cbcd809fe",
 			"key": "boardNumber",
 			"value": ""
 		}
