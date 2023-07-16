@@ -50,7 +50,7 @@
 					}
 				}
 			],
-			"_postman_id": "5a169e8e-51e6-40b7-b29d-f5cdb802e735",
+			"id": "5a169e8e-51e6-40b7-b29d-f5cdb802e735",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -146,7 +146,7 @@
 					}
 				}
 			],
-			"_postman_id": "4a6e5656-5fee-4ff4-9391-a0d8736f0867",
+			"id": "4a6e5656-5fee-4ff4-9391-a0d8736f0867",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -208,7 +208,7 @@
 					}
 				}
 			],
-			"_postman_id": "c3cefc89-ab0f-49d7-b1f2-fa5014bf8c61",
+			"id": "c3cefc89-ab0f-49d7-b1f2-fa5014bf8c61",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -237,8 +237,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{lastBoardId}}",
-							"type": "string"
+							"value": "{{lastBoardId}}"
 						}
 					]
 				},
@@ -280,7 +279,7 @@
 					}
 				}
 			],
-			"_postman_id": "f2dc326d-ea8d-42d3-bf83-30fc7eb7bccb",
+			"id": "f2dc326d-ea8d-42d3-bf83-30fc7eb7bccb",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -315,8 +314,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{lastBoardId}}",
-							"type": "string"
+							"value": "{{lastBoardId}}"
 						}
 					]
 				},
@@ -359,7 +357,7 @@
 					}
 				}
 			],
-			"_postman_id": "43abca2e-da10-41e9-b28f-5d4168148c86",
+			"id": "43abca2e-da10-41e9-b28f-5d4168148c86",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -394,8 +392,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{lastBoardId}}",
-							"type": "string"
+							"value": "{{lastBoardId}}"
 						}
 					]
 				},
@@ -446,7 +443,7 @@
 					}
 				}
 			],
-			"_postman_id": "5e048e53-8c27-402c-ab77-28ceea855255",
+			"id": "5e048e53-8c27-402c-ab77-28ceea855255",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -501,7 +498,7 @@
 					}
 				}
 			],
-			"_postman_id": "26aceebb-d91c-4d74-be80-947f91b9cc7b",
+			"id": "26aceebb-d91c-4d74-be80-947f91b9cc7b",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -532,8 +529,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{cardIdInTodoList}}",
-							"type": "string"
+							"value": "{{cardIdInTodoList}}"
 						}
 					]
 				},
@@ -568,7 +564,7 @@
 					}
 				}
 			],
-			"_postman_id": "a8f7cfcb-3d0c-4d36-bbff-1fc85c6a86d4",
+			"id": "a8f7cfcb-3d0c-4d36-bbff-1fc85c6a86d4",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -651,7 +647,7 @@
 					}
 				}
 			],
-			"_postman_id": "e652cd97-ae99-47c8-923d-95b126a75b7d",
+			"id": "e652cd97-ae99-47c8-923d-95b126a75b7d",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -680,8 +676,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{lastBoardId}}",
-							"type": "string"
+							"value": "{{lastBoardId}}"
 						}
 					]
 				},
@@ -715,7 +710,7 @@
 					}
 				}
 			],
-			"_postman_id": "ef849664-dfe2-48cb-80d0-de839012cbe0",
+			"id": "ef849664-dfe2-48cb-80d0-de839012cbe0",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -744,8 +739,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{lastBoardId}}",
-							"type": "string"
+							"value": "{{lastBoardId}}"
 						}
 					]
 				},
@@ -778,64 +772,54 @@
 	],
 	"variable": [
 		{
-			"id": "00929be0-8701-4de3-b21b-c075824f228d",
+			"id": "6f15522a-1844-4692-b81d-7acb7b04af08",
 			"key": "baseUrl",
-			"value": "https://api.trello.com/",
-			"type": "string"
+			"value": "https://api.trello.com/"
 		},
 		{
-			"id": "195e25b3-8563-4799-b762-02f8e052e56d",
+			"id": "e31496b0-4a35-4e67-b999-bf33125285dc",
 			"key": "trelloKey",
-			"value": "e1ad87515c93f75a12c540d98265a385",
-			"type": "string"
+			"value": "e1ad87515c93f75a12c540d98265a385"
 		},
 		{
-			"id": "c803300c-0ae8-41b0-927b-572aaadccc06",
+			"id": "5c671b79-3587-4ef0-bcd0-066146bea7ce",
 			"key": "trelloToken",
-			"value": "ATTAe62c8691333a5dcde39467c5c3d7864e9f1ad4e9dd22471db3d25bf1c794d08672E9A72E",
-			"type": "string"
+			"value": "ATTAe62c8691333a5dcde39467c5c3d7864e9f1ad4e9dd22471db3d25bf1c794d08672E9A72E"
 		},
 		{
-			"id": "54fcc6a4-b152-445f-92e2-fca5c28f2793",
+			"id": "71358f0f-af6b-4781-aeac-c475cca2a6cb",
 			"key": "lastBoardId",
-			"value": "",
-			"type": "string"
+			"value": ""
 		},
 		{
-			"id": "4d0713b3-8173-4a83-9f06-ddff7a034484",
+			"id": "3642be44-d84c-4076-953f-6a00b823ed6f",
 			"key": "todoListId",
-			"value": "",
-			"type": "string"
+			"value": ""
 		},
 		{
-			"id": "0ceedde3-8f91-4809-9fca-54c83f78cd91",
+			"id": "7dfedaa5-cc68-44e5-991a-95f9864df5a2",
 			"key": "doneListId",
-			"value": "",
-			"type": "string"
+			"value": ""
 		},
 		{
-			"id": "64dfc912-25d2-4f9a-a2a6-5d0c8eb3f076",
+			"id": "61639ccd-d45a-41b4-8d35-f4b3e40b5a8a",
 			"key": "cardIdInTodoList",
-			"value": "",
-			"type": "string"
+			"value": ""
 		},
 		{
-			"id": "7edae429-bfb6-4120-a64e-f898ce561a4d",
+			"id": "f19254b1-e4cc-4ba4-9ce5-61ced1ad793c",
 			"key": "firstBoardId",
-			"value": "",
-			"type": "string"
+			"value": ""
 		},
 		{
-			"id": "b47e67b8-a08e-446d-b57b-f3e6d0f91113",
+			"id": "bf4530be-1aaa-45aa-bd23-e7d323edb288",
 			"key": "existingBoardIds",
-			"value": "",
-			"type": "string"
+			"value": ""
 		},
 		{
-			"id": "d79fe64a-cfc9-4852-a8c2-f787dedabdc9",
+			"id": "292f610d-2ba1-4ec7-9d35-b16204140967",
 			"key": "boardNumber",
-			"value": "",
-			"type": "string"
+			"value": ""
 		}
 	]
 }
