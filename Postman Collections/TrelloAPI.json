@@ -1,0 +1,841 @@
+{
+	"info": {
+		"_postman_id": "d45c328e-fcd3-4a2b-8a35-072609378414",
+		"name": "Trello API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get all boards",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "c2b6ec43-bc88-4d74-9b6a-0cc1b9e37558",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "21a0ab9a-bbd2-4110-bb1a-1fe8f64606a6",
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// pm.test(\"First board from the list\", () => {",
+							"//     const response = pm.response.json();",
+							"//     const board = response[0].id;",
+							"//     const name = response[0].name;",
+							"",
+							"//     pm.expect(response[0]).to.be.an('object');",
+							"//     pm.expect(board[0]).to.be.a('string');",
+							"//     pm.expect(name[0]).to.be.a('string');",
+							"",
+							"//     pm.collectionVariables.set('firstBoardId',board);",
+							"//     console.log(board);",
+							"// })",
+							"",
+							"    // const response = pm.response.json();",
+							"    // console.log(response.map(board => board.id));",
+							"    // const existingBoardIds = response.map(board => board.id);",
+							"    // pm.collectionVariables.set('existingBoardIds',existingBoardIds);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"_postman_id": "5a169e8e-51e6-40b7-b29d-f5cdb802e735",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}1/members/me/boards?key={{trelloKey}}&token={{trelloToken}}",
+					"host": [
+						"{{baseUrl}}1"
+					],
+					"path": [
+						"members",
+						"me",
+						"boards"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{trelloKey}}"
+						},
+						{
+							"key": "token",
+							"value": "{{trelloToken}}"
+						}
+					]
+				},
+				"description": "To retrieve all boards associated with the Trello account, we can make a GET request to the following endpoint:\n\n```\nhttps://api.trello.com/1/members/me/boards?key={yourKey}&token={yourToken}\n\n```\n\nMake sure to replace `{yourKey}` and `{yourToken}` with the actual values of your API key and token obtained earlier.\n\nHere's an example using the cURL command:\n\n```\ncurl 'https://api.trello.com/1/members/me/boards?key={yourKey}&token={yourToken}'\n\n```\n\nBy using the `me` placeholder as the memberId, Trello recognizes that the request is being made on behalf of your account, based on the provided API token. This way, you can retrieve all boards associated with your user.\n\nPlease ensure to replace `{yourKey}` and `{yourToken}` with the respective values for your API key and token when making the request."
+			},
+			"response": []
+		},
+		{
+			"name": "Create a Board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e94dae2b-47b4-47f9-a5c1-6829a9dac7ea",
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Board was created\", () => {",
+							"    const response = pm.response.json();",
+							"    const board = response.id;",
+							"    const name = response.name;",
+							"    const closed = response.closed;",
+							"    ",
+							"    pm.expect(response).to.be.an('object');",
+							"    pm.expect(board).to.be.a('string');",
+							"    pm.expect(name).to.be.a('string');",
+							"    pm.expect(name).to.eql('Learning Postman ' + pm.collectionVariables.get('boardNumber'));",
+							"    pm.expect(closed).to.be.false;",
+							"",
+							"    pm.collectionVariables.set('lastBoardId',board);",
+							"    console.log(board);",
+							"})",
+							"",
+							"pm.test(\"Board is private\", () => {",
+							"    const response = pm.response.json();",
+							"    const permissionLevel = response.prefs.permissionLevel;",
+							"    pm.expect(permissionLevel).to.eql('private');",
+							"    console.log(permissionLevel)",
+							"})",
+							"",
+							"pm.test(\"Calendar is false\", () => {",
+							"    const response = pm.response.json();",
+							"    const calendar = response.prefs.switcherViews.find(view => view.viewType === 'Calendar');",
+							"    pm.expect(calendar).to.be.an('object');",
+							"    pm.expect(calendar.enabled).to.be.false;",
+							"    console.log(calendar.enabled)",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "142556e6-dd90-454d-a3cf-29bafce3dc47",
+						"exec": [
+							"let boardNumber = pm.collectionVariables.get('boardNumber');",
+							"if(isNaN(boardNumber)) {",
+							"    console.log('Inside the if block')",
+							"    boardNumber = 0;",
+							"}",
+							"boardNumber++;",
+							"pm.collectionVariables.set('boardNumber', boardNumber);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"_postman_id": "4a6e5656-5fee-4ff4-9391-a0d8736f0867",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/1/boards/?name=Learning Postman {{boardNumber}}&key={{trelloKey}}&token={{trelloToken}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"1",
+						"boards",
+						""
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Learning Postman {{boardNumber}}"
+						},
+						{
+							"key": "key",
+							"value": "{{trelloKey}}"
+						},
+						{
+							"key": "token",
+							"value": "{{trelloToken}}"
+						}
+					]
+				},
+				"description": "To create a new board on Trello, you can make a POST request to the following endpoint:\n\n```\nhttps://api.trello.com/1/boards/\n\n```\n\nHere are the parameters that you can include in the request:\n\n- `name` (required): The new name for the board. It should be a string between 1 and 16384 characters long.\n- `defaultLabels`: Determines whether to use the default set of labels. By default, this is set to `true`.\n- `defaultLists`: Determines whether to add the default set of lists to the board (To Do, Doing, Done). This parameter is ignored if `idBoardSource` is provided. By default, this is set to `true`.\n- `desc`: A new description for the board. It should be a string between 0 and 16384 characters long.\n- `idOrganization`: The ID or name of the Workspace the board should belong to. The pattern for the ID is `^[0-9a-fA-F]{24}$`.\n- `idBoardSource`: The ID of a board to copy into the new board. The pattern for the ID is `^[0-9a-fA-F]{24}$`.\n- `keepFromSource`: To keep cards from the original board, pass in the value `cards`. By default, this is set to `none`.\n- `powerUps`: The Power-Ups that should be enabled on the new board. It can be one of: `all`, `calendar`, `cardAging`, `recap`, `voting`.\n- `prefs_permissionLevel`: The permissions level of the board. It can be one of: `org`, `private`, `public`. By default, this is set to `private`.\n- `prefs_voting`: Who can vote on this board. It can be one of: `disabled`, `members`, `observers`, `org`, `public`. By default, this is set to `disabled`.\n- `prefs_comments`: Who can comment on cards on this board. It can be one of: `disabled`, `members`, `observers`, `org`, `public`. By default, this is set to `members`.\n- `prefs_invitations`: Determines what types of members can invite users to join. It can be one of: `admins`, `members`. By default, this is set to `members`.\n- `prefs_selfJoin`: Determines whether users can join the boards themselves or whether they have to be invited. By default, this is set to `true`.\n- `prefs_cardCovers`: Determines whether card covers are enabled. By default, this is set to `true`.\n- `prefs_background`: The ID of a custom background or one of the predefined colors (`blue`, `orange`, `green`, `red`, `purple`, `pink`, `lime`, `sky`, `grey`). By default, this is set to `blue`.\n- `prefs_cardAging`: Determines the type of card aging that should take place on the board if card aging is enabled. It can be one of: `pirate`, `regular`. By default, this is set to `regular`.\n    \n\nHere's an example using cURL:\n\n``` bash\nhttps://{{baseUrl}}/1/boards/?name={name}&key={{trelloKey}}&token={{trelloToken}} -X POST 'https://api.trello.com/1/boards/?name=New Board&key={yourKey}&token={yourToken}'\n\n```\n\nMake sure to replace `{yourKey}` and `{yourToken}` with your actual API key and token values. Also, update the `name` parameter with the desired name for your board.\n\nThe response will be a 200 status code indicating a successful request.\n\nPlease ensure to replace `{yourKey}` and `{yourToken}` with your specific API key and"
+			},
+			"response": []
+		},
+		{
+			"name": "Get single board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b09e2696-a77d-42fe-84c7-9afbcbd32494",
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "4f3a5f88-f874-4844-83b7-5fb5777b8222",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"_postman_id": "c3cefc89-ab0f-49d7-b1f2-fa5014bf8c61",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}1/boards/:id?key={{trelloKey}}&token={{trelloToken}}",
+					"host": [
+						"{{baseUrl}}1"
+					],
+					"path": [
+						"boards",
+						":id"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{trelloKey}}"
+						},
+						{
+							"key": "token",
+							"value": "{{trelloToken}}"
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{lastBoardId}}",
+							"type": "string"
+						}
+					]
+				},
+				"description": "To request a single board from Trello, you can make a GET request to the following endpoint:\n\n```\nhttps://api.trello.com/1/boards/{id}\n\n```\n\nHere are the parameters that you can include in the request:\n\nPath Parameters:\n\n- `id` (required): The ID of the board you want to request. The pattern for the ID is `^[0-9a-fA-F]{24}$`.\n    \n\nQuery Parameters:\n\n- `actions`: This is a nested resource. It specifies the actions to include with the response. The default value is `all`.\n- `boardStars`: Specifies the board stars to include with the response. Valid values are `mine` or `none`. The default value is `none`.\n- `cards`: This is a nested resource. It specifies the cards to include with the response. The default value is `none`.\n- `card_pluginData`: Use with the `cards` param to include card pluginData with the response. The default value is `false`.\n- `checklists`: This is a nested resource. It specifies the checklists to include with the response. The default value is `none`.\n- `customFields`: Specifies whether to include custom fields as a nested resource. The default value is `false`.\n- `fields`: Specifies the fields of the board to be included in the response. Valid values are `all` or a comma-separated list of specific fields. The default value is `name,desc,descData,closed,idOrganization,pinned,url,shortUrl,prefs,labelNames`.\n- `labels`: This is a nested resource. It specifies the labels to include with the response.\n- `lists`: This is a nested resource. It specifies the lists to include with the response. The default value is `open`.\n- `members`: This is a nested resource. It specifies the members to include with the response. The default value is `none`.\n- `memberships`: This is a nested resource. It specifies the memberships to include with the response. The default value is `none`.\n- `pluginData`: Determines whether the pluginData for this board should be returned. Valid values are `true` or `false`. The default value is `false`.\n- `organization`: Specifies whether to include the organization as a nested resource. The default value is `false`.\n- `organization_pluginData`: Use with the `organization` param to include organization pluginData with the response. The default value is `false`.\n- `myPrefs`: Specifies whether to include the preferences of the authenticated user for this board. The default value is `false`.\n- `tags`: Specifies whether to include the tags (collections) that the board belongs to. The default value is `false`.\n    \n\nHere's an example using cURL:\n\n``` bash\ncurl 'https://api.trello.com/1/boards/{id}?key={yourKey}&token={yourToken}'\n\n```\n\nMake sure to replace `{id}`, `{yourKey}`, and `{yourToken}` with the actual values for the board ID, your API key, and your API token respectively.\n\nThe response will be a 200 status code indicating a successful request. The content type of the response will be `application/json`, and it will contain the details of the requested board.\n\nPlease ensure to replace `{id}`, `{yourKey}`, and `{yourToken}` with the appropriate values."
+			},
+			"response": []
+		},
+		{
+			"name": "Create TODO List",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c3744fd6-7307-4b92-a5df-e16e72c8c546",
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"The TODO List was created\", () => {",
+							"    const response = pm.response.json();",
+							"    const todoList = response.id;",
+							"    const todoListName = response.name;",
+							"    const closed = response.closed;",
+							"    const idBoard = response.idBoard;",
+							"",
+							"    pm.expect(response).to.be.an('object');",
+							"    pm.expect(todoList).to.be.a('string');",
+							"    pm.expect(todoListName).to.eql('TODO');",
+							"    pm.expect(closed).to.be.false;",
+							"    pm.expect(idBoard).to.eql(pm.collectionVariables.get('lastBoardId'));",
+							"",
+							"    pm.collectionVariables.set('todoListId',todoList);",
+							"",
+							"    console.log(todoList);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"_postman_id": "f2dc326d-ea8d-42d3-bf83-30fc7eb7bccb",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/1/boards/:id/lists?name=TODO&key={{trelloKey}}&token={{trelloToken}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"1",
+						"boards",
+						":id",
+						"lists"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "TODO"
+						},
+						{
+							"key": "key",
+							"value": "{{trelloKey}}"
+						},
+						{
+							"key": "token",
+							"value": "{{trelloToken}}"
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{lastBoardId}}",
+							"type": "string"
+						}
+					]
+				},
+				"description": "To create a new list on a board in Trello, you can make a POST request to the following endpoint:\n\n```\nhttps://api.trello.com/1/boards/{id}/lists\n\n```\n\nHere are the parameters that you can include in the request:\n\nPath Parameters:\n\n- `id` (required): The ID of the board where you want to create the list. The pattern for the ID is `^[0-9a-fA-F]{24}$`.\n    \n\nQuery Parameters:\n\n- `name` (required): The name of the list to be created. It should be 1 to 16384 characters long.\n- `pos`: Determines the position of the list. Valid values are `top`, `bottom`, or a positive number. The default value is `top`.\n    \n\nHere's an example using cURL:\n\n``` bash\ncurl -X POST 'https://api.trello.com/1/boards/{id}/lists?name={listName}&key={yourKey}&token={yourToken}'\n\n```\n\nMake sure to replace `{id}`, `{listName}`, `{yourKey}`, and `{yourToken}` with the actual values for the board ID, the desired list name, your API key, and your API token respectively.\n\nThe response will be a 200 status code indicating a successful request. The content type of the response will be `application/json`, and it will contain the details of the newly created list.\n\nPlease ensure to replace `{id}`, `{listName}`, `{yourKey}`, and `{yourToken}` with the appropriate values."
+			},
+			"response": []
+		},
+		{
+			"name": "Create DONE List",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "57b08b33-bc9e-49ae-b935-9b749d597dbc",
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"The DONE List was created\", () => {",
+							"    const response = pm.response.json();",
+							"    const doneList = response.id;",
+							"    const doneListName = response.name;",
+							"    const closed = response.closed;",
+							"    const idBoard = response.idBoard;",
+							"",
+							"",
+							"    pm.expect(response).to.be.an('object');",
+							"    pm.expect(doneList).to.be.a('string');",
+							"    pm.expect(doneListName).to.eql('DONE');",
+							"    pm.expect(closed).to.be.false;",
+							"    pm.expect(idBoard).to.eql(pm.collectionVariables.get('lastBoardId'));",
+							"",
+							"",
+							"    pm.collectionVariables.set('doneListId',doneList);",
+							"    console.log(doneList);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"_postman_id": "43abca2e-da10-41e9-b28f-5d4168148c86",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/1/boards/:id/lists?name=DONE&key={{trelloKey}}&token={{trelloToken}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"1",
+						"boards",
+						":id",
+						"lists"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "DONE"
+						},
+						{
+							"key": "key",
+							"value": "{{trelloKey}}"
+						},
+						{
+							"key": "token",
+							"value": "{{trelloToken}}"
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{lastBoardId}}",
+							"type": "string"
+						}
+					]
+				},
+				"description": "To create a new list on a board in Trello, you can make a POST request to the following endpoint:\n\n```\nhttps://api.trello.com/1/boards/{id}/lists\n\n```\n\nHere are the parameters that you can include in the request:\n\nPath Parameters:\n\n- `id` (required): The ID of the board where you want to create the list. The pattern for the ID is `^[0-9a-fA-F]{24}$`.\n    \n\nQuery Parameters:\n\n- `name` (required): The name of the list to be created. It should be 1 to 16384 characters long.\n- `pos`: Determines the position of the list. Valid values are `top`, `bottom`, or a positive number. The default value is `top`.\n    \n\nHere's an example using cURL:\n\n``` bash\ncurl -X POST 'https://api.trello.com/1/boards/{id}/lists?name={listName}&key={yourKey}&token={yourToken}'\n\n```\n\nMake sure to replace `{id}`, `{listName}`, `{yourKey}`, and `{yourToken}` with the actual values for the board ID, the desired list name, your API key, and your API token respectively.\n\nThe response will be a 200 status code indicating a successful request. The content type of the response will be `application/json`, and it will contain the details of the newly created list.\n\nPlease ensure to replace `{id}`, `{listName}`, `{yourKey}`, and `{yourToken}` with the appropriate values."
+			},
+			"response": []
+		},
+		{
+			"name": "Create a Sign-up for Trello Card in the TODO List",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "89293e2d-202f-46cd-9582-d9a628414f1c",
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"The Sign-up for Trello Card in TODO List was created\", () => {",
+							"    const response = pm.response.json();",
+							"    const cardId = response.id;",
+							"    const cardName = response.name;",
+							"    const cardAttachments = response.badges.attachmentsByType.trello.card;",
+							"",
+							"    pm.expect(response).to.be.an('object');",
+							"    pm.expect(cardId).to.be.a('string');",
+							"    pm.expect(cardName).to.eql('Sign-up for Trello');",
+							"    pm.expect(response.idList).to.eql(pm.collectionVariables.get('todoListId'))",
+							"    pm.expect(response.idBoard).to.eql(pm.collectionVariables.get('lastBoardId'))",
+							"    pm.expect(cardAttachments) == 0;",
+							"",
+							"    pm.collectionVariables.set('cardIdInTodoList',cardId);",
+							"    console.log(cardId);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "8aa53d98-b11c-4288-8733-c515dba323d1",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"_postman_id": "5e048e53-8c27-402c-ab77-28ceea855255",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/1/cards?name=Sign-up for Trello&idList={{todoListId}}&key={{trelloKey}}&token={{trelloToken}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"1",
+						"cards"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Sign-up for Trello"
+						},
+						{
+							"key": "idList",
+							"value": "{{todoListId}}"
+						},
+						{
+							"key": "key",
+							"value": "{{trelloKey}}"
+						},
+						{
+							"key": "token",
+							"value": "{{trelloToken}}"
+						}
+					]
+				},
+				"description": "To create a new card in Trello, you can make a POST request to the following endpoint:\n\n```\nhttps://api.trello.com/1/cards\n\n```\n\nHere are the query parameters that you can include in the request:\n\n- `name` (required): The name for the card.\n- `desc`: The description for the card.\n- `pos`: The position of the new card. Valid values are `top`, `bottom`, or a positive float.\n- `due`: A due date for the card (in date format).\n- `start`: The start date of the card (in date format).\n- `dueComplete`: Indicates whether the due date is complete (boolean).\n- `idList` (required): The ID of the list where the card should be created. The pattern for the ID is `^[0-9a-fA-F]{24}$`.\n- `idMembers`: A comma-separated list of member IDs to add to the card.\n- `idLabels`: A comma-separated list of label IDs to add to the card.\n- `urlSource`: A URL starting with `http://` or `https://`.\n- `fileSource`: The binary data of an attachment.\n- `mimeType`: The mimeType of the attachment (max length: 256).\n- `idCardSource`: The ID of a card to copy into the new card. The pattern for the ID is `^[0-9a-fA-F]{24}$`.\n- `keepFromSource`: If using `idCardSource`, you can specify which properties to copy over. Valid values are `all` or a comma-separated list of: `attachments`, `checklists`, `customFields`, `comments`, `due`, `start`, `labels`, `members`, `stickers`.\n- `address`: For use with the Map View.\n- `locationName`: For use with the Map View.\n- `coordinates`: For use with the Map View. Should take the form `latitude,longitude`.\n    \n\nHere's an example using cURL:\n\n``` bash\ncurl -X POST 'https://api.trello.com/1/cards?idList={listId}&name={cardName}&key={yourKey}&token={yourToken}'\n\n```\n\nMake sure to replace `{listId}`, `{cardName}`, `{yourKey}`, and `{yourToken}` with the actual values for the list ID, the desired card name, your API key, and your API token respectively.\n\nThe response will be a 200 status code indicating a successful request. The content type of the response will be `application/json`, and it will contain the details of the newly created card.\n\nPlease ensure to replace `{listId}`, `{cardName}`, `{yourKey}`, and `{yourToken}` with the appropriate values."
+			},
+			"response": []
+		},
+		{
+			"name": "List of actions of the Sign-up for Trello card",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f4443431-6c11-414f-a297-e8b315e23ecc",
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"_postman_id": "26aceebb-d91c-4d74-be80-947f91b9cc7b",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/1/cards/:id/actions?key={{trelloKey}}&token={{trelloToken}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"1",
+						"cards",
+						":id",
+						"actions"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{trelloKey}}"
+						},
+						{
+							"key": "token",
+							"value": "{{trelloToken}}"
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{cardIdInTodoList}}",
+							"type": "string"
+						}
+					]
+				},
+				"description": "To list the actions on a card in Trello, you can make a GET request to the following endpoint:\n\n```\nhttps://api.trello.com/1/cards/{id}/actions\n\n```\n\nHere are the parameters you can include in the request:\n\nPath Parameter:\n\n- `id` (required): The ID of the card. The pattern for the ID is `^[0-9a-fA-F]{24}$`.\n    \n\nQuery Parameters:\n\n- `filter`: A comma-separated list of action types to filter the results.\n    - Default: `commentCard, updateCard:idList`\n- `page`: The page of results for actions. Each page contains up to 50 actions.\n    - Default: 0\n    - Maximum: 19\n\nHere's an example using cURL:\n\n``` bash\ncurl -X GET 'https://api.trello.com/1/cards/{id}/actions?key={yourKey}&token={yourToken}'\n\n```\n\nMake sure to replace `{id}`, `{yourKey}`, and `{yourToken}` with the actual values for the card ID, your API key, and your API token respectively.\n\nThe response will be a 200 status code indicating a successful request. The content type of the response will be `application/json`, and it will contain an array of actions associated with the card.\n\nPlease ensure to replace `{id}`, `{yourKey}`, and `{yourToken}` with the appropriate values."
+			},
+			"response": []
+		},
+		{
+			"name": "Move the Sign-up for Trello Card to the DONE List",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e541f381-38f1-4307-b8ce-47cd589158d4",
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"The Sign-up for Trello Card was moved to DONE List\", () => {",
+							"    const response = pm.response.json();",
+							"    const doneListId = response.idList;",
+							"    const cardName = response.name;",
+							"",
+							"    pm.expect(response).to.be.an('object');",
+							"    pm.expect(cardName).to.eql('Sign-up for Trello');",
+							"    pm.expect(doneListId).to.eql(pm.collectionVariables.get('doneListId'))",
+							"",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"_postman_id": "a8f7cfcb-3d0c-4d36-bbff-1fc85c6a86d4",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/1/cards/:id?key={{trelloKey}}&token={{trelloToken}}&idList={{doneListId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"1",
+						"cards",
+						":id"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{trelloKey}}"
+						},
+						{
+							"key": "token",
+							"value": "{{trelloToken}}"
+						},
+						{
+							"key": "idList",
+							"value": "{{doneListId}}"
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{cardIdInTodoList}}",
+							"type": "string"
+						}
+					]
+				},
+				"description": "To update a card in Trello, you can make a PUT request to the following endpoint:\n\n```\nhttps://api.trello.com/1/cards/{id}\n\n```\n\nHere are the parameters you can include in the request:\n\nPath Parameter:\n\n- `id` (required): The ID of the card. The pattern for the ID is `^[0-9a-fA-F]{24}$`.\n    \n\nQuery Parameters:\n\n- `name`: The new name for the card.\n- `idList`: The ID of the board that the card should be moved to.\n    \n\nHere's an example using cURL:\n\n``` bash\ncurl -X PUT 'https://api.trello.com/1/cards/{id}?key={yourKey}&token={yourToken}'\n\n```\n\nMake sure to replace `{id}`, `{yourKey}`, and `{yourToken}` with the actual values for the card ID, your API key, and your API token respectively.\n\nThe response will be a 200 status code indicating a successful request. The content type of the response will be `application/json`, and it will contain the updated card information.\n\nPlease ensure to replace `{id}`, `{yourKey}`, and `{yourToken}` with the appropriate values."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "14edd9af-6fb4-4a68-941a-f6d0ce660a16",
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "582ad116-8313-4ee6-9e0b-e44f3114bde3",
+						"exec": [
+							"",
+							"// const existingBoardIds = pm.collectionVariables.get('existingBoardIds');",
+							"// console.log(existingBoardIds);",
+							"// const boardId = existingBoardIds.pop();",
+							"// pm.collectionVariables.set('firstBoardId', boardId);",
+							"// pm.collectionVariables.set('existingBoardIds', existingBoardIds);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"_postman_id": "e652cd97-ae99-47c8-923d-95b126a75b7d",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}1/boards/:id?key={{trelloKey}}&token={{trelloToken}}",
+					"host": [
+						"{{baseUrl}}1"
+					],
+					"path": [
+						"boards",
+						":id"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{trelloKey}}"
+						},
+						{
+							"key": "token",
+							"value": "{{trelloToken}}"
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{lastBoardId}}",
+							"type": "string"
+						}
+					]
+				},
+				"description": "To delete a board in Trello, you can make a DELETE request to the following endpoint:\n\n```\nhttps://api.trello.com/1/boards/{id}\n\n```\n\nHere are the parameters you can include in the request:\n\nPath Parameter:\n\n- `id` (required): The ID of the board you want to delete. The pattern for the ID is `^[0-9a-fA-F]{24}$`.\n    \n\nQuery Parameters:\n\n- `key`: Your API key.\n- `token`: Your API token.\n    \n\nHere's an example using cURL:\n\n``` bash\ncurl -X DELETE 'https://api.trello.com/1/boards/{id}?key={yourKey}&token={yourToken}'\n\n```\n\nMake sure to replace `{id}`, `{yourKey}`, and `{yourToken}` with the actual values for the board ID, your API key, and your API token respectively.\n\nThe response will be a 200 status code indicating a successful deletion.\n\nPlease ensure to replace `{id}`, `{yourKey}`, and `{yourToken}` with the appropriate values."
+			},
+			"response": []
+		},
+		{
+			"name": "Get deleted board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b09e2696-a77d-42fe-84c7-9afbcbd32494",
+						"exec": [
+							"pm.test(\"Status code is 404\", () => {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "4f3a5f88-f874-4844-83b7-5fb5777b8222",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"_postman_id": "ef849664-dfe2-48cb-80d0-de839012cbe0",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}1/boards/:id?key={{trelloKey}}&token={{trelloToken}}",
+					"host": [
+						"{{baseUrl}}1"
+					],
+					"path": [
+						"boards",
+						":id"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{trelloKey}}"
+						},
+						{
+							"key": "token",
+							"value": "{{trelloToken}}"
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{lastBoardId}}",
+							"type": "string"
+						}
+					]
+				},
+				"description": "This request was made for checking the ability to see a single board that was already deleted. You can make a GET request to the following endpoint:\n\n```\nhttps://api.trello.com/1/boards/{id}\n\n```\n\nHere are the parameters that you can include in the request:\n\nPath Parameters:\n\n- `id` (required): The ID of the deleted board you want to request. The pattern for the ID is `^[0-9a-fA-F]{24}$`.\n    \n\nQuery Parameters:\n\n- `actions`: This is a nested resource. It specifies the actions to include with the response. The default value is `all`.\n- `boardStars`: Specifies the board stars to include with the response. Valid values are `mine` or `none`. The default value is `none`.\n- `cards`: This is a nested resource. It specifies the cards to include with the response. The default value is `none`.\n- `card_pluginData`: Use with the `cards` param to include card pluginData with the response. The default value is `false`.\n- `checklists`: This is a nested resource. It specifies the checklists to include with the response. The default value is `none`.\n- `customFields`: Specifies whether to include custom fields as a nested resource. The default value is `false`.\n- `fields`: Specifies the fields of the board to be included in the response. Valid values are `all` or a comma-separated list of specific fields. The default value is `name,desc,descData,closed,idOrganization,pinned,url,shortUrl,prefs,labelNames`.\n- `labels`: This is a nested resource. It specifies the labels to include with the response.\n- `lists`: This is a nested resource. It specifies the lists to include with the response. The default value is `open`.\n- `members`: This is a nested resource. It specifies the members to include with the response. The default value is `none`.\n- `memberships`: This is a nested resource. It specifies the memberships to include with the response. The default value is `none`.\n- `pluginData`: Determines whether the pluginData for this board should be returned. Valid values are `true` or `false`. The default value is `false`.\n- `organization`: Specifies whether to include the organization as a nested resource. The default value is `false`.\n- `organization_pluginData`: Use with the `organization` param to include organization pluginData with the response. The default value is `false`.\n- `myPrefs`: Specifies whether to include the preferences of the authenticated user for this board. The default value is `false`.\n- `tags`: Specifies whether to include the tags (collections) that the board belongs to. The default value is `false`.\n    \n\nHere's an example using cURL:\n\n``` bash\ncurl 'https://api.trello.com/1/boards/{id}?key={yourKey}&token={yourToken}'\n\n```\n\nMake sure to replace `{id}`, `{yourKey}`, and `{yourToken}` with the actual values for the board ID, your API key, and your API token respectively.\n\nThe response will be a 404 status code indicating a successful request. The content type of the response will be `application/json`, and it will contain the details of the requested board.\n\nPlease ensure to replace `{id}`, `{yourKey}`, and `{yourToken}` with the appropriate values."
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "00405c71-4307-4028-96a5-6e8181d4722a",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "c65c757f-3560-41a0-8e77-55a8b6453b0e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "00929be0-8701-4de3-b21b-c075824f228d",
+			"key": "baseUrl",
+			"value": "https://api.trello.com/",
+			"type": "string"
+		},
+		{
+			"id": "195e25b3-8563-4799-b762-02f8e052e56d",
+			"key": "trelloKey",
+			"value": "e1ad87515c93f75a12c540d98265a385",
+			"type": "string"
+		},
+		{
+			"id": "c803300c-0ae8-41b0-927b-572aaadccc06",
+			"key": "trelloToken",
+			"value": "ATTAe62c8691333a5dcde39467c5c3d7864e9f1ad4e9dd22471db3d25bf1c794d08672E9A72E",
+			"type": "string"
+		},
+		{
+			"id": "54fcc6a4-b152-445f-92e2-fca5c28f2793",
+			"key": "lastBoardId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "4d0713b3-8173-4a83-9f06-ddff7a034484",
+			"key": "todoListId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "0ceedde3-8f91-4809-9fca-54c83f78cd91",
+			"key": "doneListId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "64dfc912-25d2-4f9a-a2a6-5d0c8eb3f076",
+			"key": "cardIdInTodoList",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "7edae429-bfb6-4120-a64e-f898ce561a4d",
+			"key": "firstBoardId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "b47e67b8-a08e-446d-b57b-f3e6d0f91113",
+			"key": "existingBoardIds",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "d79fe64a-cfc9-4852-a8c2-f787dedabdc9",
+			"key": "boardNumber",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
